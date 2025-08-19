@@ -1,5 +1,7 @@
 # Nexus AI SaaS Platform
 
+![Nexus Banner](./public/landingPage.png)
+
 Nexus is a modern AI SaaS platform that empowers users to generate code, images, music, and video using natural language prompts. Built with Next.js, TypeScript, and Tailwind CSS, Nexus integrates state-of-the-art AI models (Google Gemini, Leap AI, Replicate) and provides a seamless, secure, and scalable user experience.
 
 ## Features
@@ -23,6 +25,10 @@ Nexus is a modern AI SaaS platform that empowers users to generate code, images,
 
 [Live Demo](https://ankit-nexus.vercel.app/)
 
----
+### Screenshots
 
-**Nexus** – Create content 10x faster with AI.
+![Dashboard Screenshot](./public/dashboard.png)  
+![AI Conversation Generation](./public/conversation.png)
+![AI Code Generation](./public/code.png)
+
+---
