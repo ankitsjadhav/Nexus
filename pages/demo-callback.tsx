@@ -1,10 +1,9 @@
-"use client";
-
 import { useEffect } from "react";
 import { useSignIn } from "@clerk/nextjs";
 import { useRouter } from "next/router";
+import dynamic from "next/dynamic";
 
-const DemoCallbackPage = () => {
+const DemoCallbackComponent = () => {
   const { signIn, setActive, isLoaded } = useSignIn();
   const router = useRouter();
 
@@ -39,14 +38,11 @@ const DemoCallbackPage = () => {
           await setActive({ session: signInAttempt.createdSessionId });
           router.push("/dashboard");
         } else {
-          console.error(
-            "Clerk sign-in attempt was not completed:",
-            signInAttempt
-          );
+          console.error("Clerk sign-in attempt failed:", signInAttempt);
           router.push("/sign-in");
         }
       } catch (error) {
-        console.error("Clerk: Failed to process sign-in token:", error);
+        console.error("Clerk: An error occurred during sign-in:", error);
         router.push("/sign-in");
       }
     };
@@ -64,4 +60,11 @@ const DemoCallbackPage = () => {
   );
 };
 
-export default DemoCallbackPage;
+const NoSsrDemoCallbackPage = dynamic(
+  () => Promise.resolve(DemoCallbackComponent),
+  {
+    ssr: false,
+  }
+);
+
+export default NoSsrDemoCallbackPage;
