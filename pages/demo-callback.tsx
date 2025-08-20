@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect } from "react";
 import { useSignIn } from "@clerk/nextjs";
 import { useRouter } from "next/router";
@@ -7,16 +9,20 @@ const DemoCallbackPage = () => {
   const router = useRouter();
 
   useEffect(() => {
-    const processToken = async () => {
-      const token = router.query.token;
+    if (!router.isReady) {
+      return;
+    }
 
+    const { token } = router.query;
+
+    const processToken = async () => {
       if (!isLoaded || !signIn || !setActive || !token) {
         return;
       }
 
       if (typeof token !== "string") {
-        console.error("Invalid token format received.");
-        router.push("/sign-in"); // Redirect to safety
+        console.error("Invalid token format.");
+        router.push("/sign-in");
         return;
       }
 
@@ -31,7 +37,6 @@ const DemoCallbackPage = () => {
           signInAttempt.createdSessionId
         ) {
           await setActive({ session: signInAttempt.createdSessionId });
-
           router.push("/dashboard");
         } else {
           console.error(
@@ -41,13 +46,13 @@ const DemoCallbackPage = () => {
           router.push("/sign-in");
         }
       } catch (error) {
-        console.error("Clerk: An error occurred during sign-in:", error);
+        console.error("Clerk: Failed to process sign-in token:", error);
         router.push("/sign-in");
       }
     };
 
     processToken();
-  }, [isLoaded, signIn, setActive, router.query.token, router]);
+  }, [isLoaded, signIn, setActive, router.isReady, router.query, router]);
 
   return (
     <div className="w-full h-screen flex flex-col items-center justify-center bg-gray-50">
