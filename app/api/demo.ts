@@ -20,7 +20,7 @@ export default async function handler(
         .json({ error: "Demo login is not configured correctly." });
     }
 
-    // --- Step 1: Create a Sign-In Token (Corrected Method) ---
+    // Step 1: Create a Sign-In Token (Corrected Method)
     // This method creates a short-lived, one-time-use token for the specified user.
     // This is the modern way to programmatically sign in a user.
     const signInToken = await clerkClient.signInTokens.createSignInToken({
@@ -28,8 +28,8 @@ export default async function handler(
       expiresInSeconds: 60, // The token is valid for 60 seconds
     });
 
-    // --- Step 2: Redirect to the Frontend Callback Page ---
-    // We pass the token as a URL query parameter. The callback page will read this.
+    // Step 2: Redirect to the Frontend Callback Page
+    // Pass the token as a URL query parameter. The callback page will read this.
     const callbackUrl = new URL("/demo-callback", req.headers.origin);
     callbackUrl.searchParams.set("token", signInToken.token);
 
