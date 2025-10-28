@@ -28,7 +28,6 @@ import {
 import { Card, CardFooter } from "@/components/ui/card";
 import Image from "next/image";
 
-// Define the message type according to the Gemini API structure
 interface Message {
   role: string;
   parts: Array<{ text: string }>;

@@ -17,7 +17,6 @@ import { useState } from "react";
 import { Empty } from "@/components/empty";
 import { Loader } from "@/components/loader";
 
-// Define the message type according to the Gemini API structure
 interface Message {
   role: string;
   parts: Array<{ text: string }>;
