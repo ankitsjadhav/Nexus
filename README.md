@@ -1,4 +1,4 @@
-# Nexus AI SaaS Platform
+# Nexus AI Platform
 
 <img src="./public/landingPage.png" alt="Nexus Banner" width="800"/>
 
