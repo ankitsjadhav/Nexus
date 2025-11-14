@@ -92,7 +92,9 @@ const VideoPage = () => {
               <Loader />
             </div>
           )}
-          {!video && !isLoading && <Empty label="No video generated." />}
+          {!video && !isLoading && (
+            <Empty label="Video Generation Coming Soon!" />
+          )}
           {video && (
             <video
               className="w-full aspect-video mt-8 rounded-lg border bg-black"

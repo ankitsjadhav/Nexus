@@ -9,6 +9,18 @@ dotenv.config();
 console.log("Google API Key:", process.env.GOOGLE_API_KEY);
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY || "");
 
+async function retryRequest(fn: () => Promise<any>, retries = 3, delay = 1000) {
+  for (let i = 0; i < retries; i++) {
+    try {
+      return await fn();
+    } catch (error) {
+      console.log(`Attempt ${i + 1} failed:`, error);
+      if (i === retries - 1) throw error;
+      await new Promise((resolve) => setTimeout(resolve, delay * (i + 1)));
+    }
+  }
+}
+
 export async function POST(req: Request) {
   try {
     const { userId } = await auth();
@@ -33,9 +45,15 @@ export async function POST(req: Request) {
       return new NextResponse("Free trial has expired.", { status: 403 });
     }
 
-    const prompt = `You are a code generation AI. Your purpose is to assist in generating code snippets based on user prompts. Users will provide queries or descriptions related to programming tasks, and you will respond with relevant code snippets or solutions. Ensure that the code you generate is correct, efficient, and adheres to best practices for the specified programming language or framework.\n\nUser Prompt: ${messages}`;
-    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
-    const result = await model.generateContent(prompt);
+    const result = await retryRequest(
+      async () => {
+        const prompt = `You are a code generation AI. Your purpose is to assist in generating code snippets based on user prompts. Users will provide queries or descriptions related to programming tasks, and you will respond with relevant code snippets or solutions. Ensure that the code you generate is correct, efficient, and adheres to best practices for the specified programming language or framework.\n\nUser Prompt: ${messages}`;
+        const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+        return await model.generateContent(prompt);
+      },
+      3,
+      1500
+    );
 
     await increaseApiLimit();
 

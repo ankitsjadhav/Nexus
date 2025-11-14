@@ -92,7 +92,9 @@ const MusicPage = () => {
               <Loader />
             </div>
           )}
-          {!music && !isLoading && <Empty label="No Music Generated." />}
+          {!music && !isLoading && (
+            <Empty label="Music Generation Coming Soon!" />
+          )}
           {music && (
             <audio controls className="w-full mt-8">
               <source src={music} />

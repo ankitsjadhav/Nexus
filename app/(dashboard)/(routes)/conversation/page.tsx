@@ -83,7 +83,7 @@ const ConversationPage = () => {
                       <Input
                         className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
                         disabled={isLoading}
-                        placeholder="How do I calculate the radius of a circle?"
+                        placeholder="Ask me anything..."
                         {...field}
                       />
                     </FormControl>
@@ -106,8 +106,10 @@ const ConversationPage = () => {
               <Loader />
             </div>
           )}
+          {!messages && !isLoading && (
+            <Empty label="No conversation started." />
+          )}
 
-          {/* Display user question and AI response if available */}
           {userPrompt && messages && (
             <div className="flex flex-col-reverse gap-y-4">
               {/* AI Response */}
